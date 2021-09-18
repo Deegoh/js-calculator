@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState } from 'react';
@@ -8,13 +9,40 @@ const Board = () => {
   const handleClick = (value) => {
     if (display === '0') {
       setDisplay(value.target.innerText);
-    } else {
-      setDisplay(display + value.target.innerText);
-    }
+    } else if (
+      (display.includes('.') && value.target.innerText === '.')
+      || (display.includes('/') && value.target.innerText === '/')
+      || (display.includes('*') && value.target.innerText === '*')
+      || (display.includes('-') && value.target.innerText === '-')
+      || (display.includes('+') && value.target.innerText === '+')
+    ) { setDisplay(display); } else { setDisplay(display + value.target.innerText); }
   };
 
   const clear = () => {
     setDisplay('0');
+  };
+
+  const equal = () => {
+    const values = display.split(/[+/*-]/, 3);
+    const sign = display.split(/[0-9]+/, 2);
+    let res;
+
+    switch (sign[1]) {
+      case '/':
+        res = values[0] / values[1];
+        break;
+      case '*':
+        res = values[0] * values[1];
+        break;
+      case '-':
+        res = values[0] - values[1];
+        break;
+      case '+':
+        res = values[0] + values[1];
+        break;
+      default:
+    }
+    setDisplay(res);
   };
 
   return (
@@ -22,7 +50,7 @@ const Board = () => {
       <div id="display">{display}</div>
       <div
         id="equals"
-        onClick={(e) => handleClick(e)}
+        onClick={() => equal()}
       >
         =
       </div>
