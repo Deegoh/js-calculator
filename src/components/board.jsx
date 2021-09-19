@@ -9,13 +9,7 @@ const Board = () => {
   const handleClick = (value) => {
     if (display === '0') {
       setDisplay(value.target.innerText);
-    } else if (
-      (display.includes('.') && value.target.innerText === '.')
-      || (display.includes('/') && value.target.innerText === '/')
-      || (display.includes('*') && value.target.innerText === '*')
-      || (display.includes('-') && value.target.innerText === '-')
-      || (display.includes('+') && value.target.innerText === '+')
-    ) { setDisplay(display); } else { setDisplay(display + value.target.innerText); }
+    } else { setDisplay(display + value.target.innerText); }
   };
 
   const clear = () => {
@@ -23,25 +17,33 @@ const Board = () => {
   };
 
   const equal = () => {
-    const values = display.split(/[+/*-]/, 3);
-    const sign = display.split(/[0-9]+/, 2);
-    let res;
+    console.log(display);
+    const values = display.split(/[+/*-]/, display.length);
+    const sign = display.split(/[0-9]+/, display.length);
+    let res = values[0];
+    console.log(values);
+    console.log(sign);
 
-    switch (sign[1]) {
-      case '/':
-        res = values[0] / values[1];
-        break;
-      case '*':
-        res = values[0] * values[1];
-        break;
-      case '-':
-        res = values[0] - values[1];
-        break;
-      case '+':
-        res = values[0] + values[1];
-        break;
-      default:
+    // eslint-disable-next-line no-plusplus
+    for (let index = 1; index < sign.length; index++) {
+      switch (sign[index]) {
+        case '/':
+          res /= values[index];
+          break;
+        case '*':
+          res *= values[index];
+          break;
+        case '-':
+          res -= values[index];
+          break;
+        case '+':
+          // eslint-disable-next-line radix
+          res = parseInt(res) + parseInt(values[index]);
+          break;
+        default:
+      }
     }
+    console.log(res);
     setDisplay(res);
   };
 
