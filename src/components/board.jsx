@@ -1,3 +1,5 @@
+/* eslint-disable no-const-assign */
+/* eslint-disable no-plusplus */
 /* eslint-disable no-console */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
@@ -5,11 +7,26 @@ import React, { useState } from 'react';
 
 const Board = () => {
   const [display, setDisplay] = useState('0');
+  const [lastClick, setLastClick] = useState('');
+  const [dot, setDot] = useState(true);
 
   const handleClick = (value) => {
     if (display === '0') {
       setDisplay(value.target.innerText);
-    } else { setDisplay(display + value.target.innerText); }
+    } else {
+      if (value.target.innerText.match(/[+/*-]/g)) {
+        setDot(true);
+      }
+      if (value.target.innerText === '.') {
+        setDot(false);
+      }
+      if (!dot && value.target.innerText === '.') return;
+
+      setDisplay(display + value.target.innerText);
+    }
+    console.log(dot);
+    console.log(lastClick);
+    setLastClick(value.target.innerText);
   };
 
   const clear = () => {
@@ -18,33 +35,37 @@ const Board = () => {
 
   const equal = () => {
     console.log(display);
-    const values = display.split(/[+/*-]/, display.length);
-    const sign = display.split(/[0-9]+/, display.length);
-    let res = values[0];
-    console.log(values);
+    const sign = display.match(/[+/*-]/g, display.length);
+    const values = display.match(/[0-9.]+/g, display.length);
+    let res = parseFloat(values[0]);
     console.log(sign);
+    console.log(values);
+    let count = 1;
 
-    // eslint-disable-next-line no-plusplus
-    for (let index = 1; index < sign.length; index++) {
+    for (let index = 0; index < sign.length; index++) {
       switch (sign[index]) {
         case '/':
-          res /= values[index];
+          res = parseFloat(res) / parseFloat(values[count]);
+          count++;
           break;
         case '*':
-          res *= values[index];
+          res = parseFloat(res) * parseFloat(values[count]);
+          count++;
           break;
         case '-':
-          res -= values[index];
+          res = parseFloat(res) - parseFloat(values[count]);
+          count++;
           break;
         case '+':
           // eslint-disable-next-line radix
-          res = parseInt(res) + parseInt(values[index]);
+          res = parseFloat(res) + parseFloat(values[count]);
+          count++;
           break;
         default:
       }
     }
     console.log(res);
-    setDisplay(res);
+    setDisplay(String(res));
   };
 
   return (
