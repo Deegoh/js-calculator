@@ -12,9 +12,14 @@ const Board = () => {
 
   const handleClick = (value) => {
     if (display === '0') {
-      setDisplay(value.target.innerText);
+      if (value.target.innerText === '.') {
+        setDisplay('0.');
+        setDot(false);
+      } else {
+        setDisplay(value.target.innerText);
+      }
     } else {
-      if (value.target.innerText.match(/[+/*-]/g)) {
+      if (lastClick.match(/[+/*-]/g) && value.target.innerText.match(/[0-9]+/g)) {
         setDot(true);
       }
       if (value.target.innerText === '.') {
@@ -24,7 +29,6 @@ const Board = () => {
 
       setDisplay(display + value.target.innerText);
     }
-    console.log(dot);
     console.log(lastClick);
     setLastClick(value.target.innerText);
   };
@@ -35,6 +39,8 @@ const Board = () => {
 
   const equal = () => {
     console.log(display);
+    console.log();
+
     const sign = display.match(/[+/*-]/g, display.length);
     const values = display.match(/[0-9.]+/g, display.length);
     let res = parseFloat(values[0]);
@@ -65,6 +71,7 @@ const Board = () => {
       }
     }
     console.log(res);
+    setDot(true);
     setDisplay(String(res));
   };
 
