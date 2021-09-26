@@ -1,6 +1,4 @@
-/* eslint-disable no-const-assign */
 /* eslint-disable no-plusplus */
-/* eslint-disable no-console */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState } from 'react';
@@ -8,19 +6,15 @@ import React, { useState } from 'react';
 const Board = () => {
   const [display, setDisplay] = useState('0');
   const [lastInput, setLastInput] = useState(null);
-  const [isDecimal, setIsDecimal] = useState(false);
-  const [currentVal, setCurrentVal] = useState('');
-  const [prevVal, setPrevVal] = useState('');
-  const [ope, SetOpe] = useState('');
 
-  const regOperator = new RegExp('[/*-+]');
+  const [isDecimal, setIsDecimal] = useState(false);
+
+  const regOperator = /[/*\-+]/;
+  const regDigits = /[0-9.]+/;
 
   const clear = () => {
-    setCurrentVal('');
-    setPrevVal('');
-    setLastInput(null);
     setIsDecimal(false);
-    SetOpe('');
+    setLastInput(null);
     setDisplay('0');
   };
 
@@ -29,7 +23,6 @@ const Board = () => {
     if (lastInput) setDisplay(display + e.target.innerText);
     else setDisplay(e.target.innerText);
     setLastInput(e.target.innerText);
-    setCurrentVal(currentVal + e.target.innerText);
   };
 
   const calculate = (prev, op, current) => {
@@ -53,35 +46,63 @@ const Board = () => {
   };
 
   const setOperator = (e) => {
-    if (prevVal === '') setPrevVal(currentVal);
-    else setPrevVal(calculate(prevVal, ope, currentVal));
-    setCurrentVal('');
-    SetOpe(e.target.innerText);
-    setDisplay(display + e.target.innerText);
-    setLastInput(e.target.innerText);
     setIsDecimal(false);
+    setLastInput(e.target.innerText);
+    setDisplay(display + e.target.innerText);
   };
 
   const setDecimal = () => {
-    if (!isDecimal && regOperator.test(lastInput))setDisplay(`${display}0.`);
-    else if (!isDecimal) setDisplay(`${display}.`);
+    if (!isDecimal && regOperator.test(lastInput)) {
+      setDisplay(`${display}0.`);
+    } else if (!isDecimal) {
+      setDisplay(`${display}.`);
+    }
     setLastInput('.');
     setIsDecimal(true);
   };
 
   const equal = () => {
-    console.log(display);
-    console.log(prevVal);
-    console.log(ope);
-    console.log(currentVal);
-    const res = calculate(prevVal, ope, currentVal);
-    console.log(res);
-    setCurrentVal(res);
-    setPrevVal('');
-    setLastInput(res);
-    setDisplay('');
+    const arr = display.split('');
+    const newArr = [];
+    let index = 0;
+    let operator;
+    let isNeg = false;
+    let append = '';
+
+    arr.forEach((value) => {
+      if (regDigits.test(value)) {
+        if (isNeg) {
+          append += (value * -1);
+          isNeg = false;
+        } else {
+          append += value;
+        }
+        if (regOperator.test(arr[index + 1]) || index + 1 === arr.length) {
+          newArr.push(append);
+          append = '';
+        }
+        index++;
+        return;
+      }
+      if (regOperator.test(value)) {
+        if (regDigits.test(arr[index + 1])) {
+          operator = value;
+          if (arr[index] === '-' && regOperator.test(arr[index - 1])) {
+            operator = arr[index - 1];
+            isNeg = true;
+          }
+          newArr.push(operator);
+        }
+      }
+      index++;
+    });
+    let res = parseFloat(newArr[0]);
+    for (let i = 0; i < newArr.length - 2; i += 2) {
+      res = calculate(res, newArr[i + 1], newArr[i + 2]);
+    }
     setIsDecimal(false);
-    SetOpe('');
+    setLastInput('=');
+    setDisplay(res);
   };
 
   return (
