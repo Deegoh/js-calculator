@@ -107,109 +107,113 @@ const Board = () => {
 
   return (
     <>
-      <div id="display">{display}</div>
-      <div id="lastInput">{lastInput}</div>
-      <div
-        id="equals"
-        onClick={() => equal()}
-      >
-        =
+      <div className="display">
+        <div id="display">{display}</div>
+        <div id="lastInput">{lastInput}</div>
       </div>
-      <div
-        id="add"
-        onClick={(e) => setOperator(e)}
-      >
-        +
-      </div>
-      <div
-        id="subtract"
-        onClick={(e) => setOperator(e)}
-      >
-        -
-      </div>
-      <div
-        id="multiply"
-        onClick={(e) => setOperator(e)}
-      >
-        *
-      </div>
-      <div
-        id="divide"
-        onClick={(e) => setOperator(e)}
-      >
-        /
-      </div>
-      <div
-        id="decimal"
-        onClick={() => setDecimal()}
-      >
-        .
-      </div>
-      <div
-        id="clear"
-        onClick={() => clear()}
-      >
-        del
-      </div>
-      <div
-        id="zero"
-        onClick={(e) => setNumber(e)}
-      >
-        0
-      </div>
-      <div
-        id="one"
-        onClick={(e) => setNumber(e)}
-      >
-        1
-      </div>
-      <div
-        id="two"
-        onClick={(e) => setNumber(e)}
-      >
-        2
-      </div>
-      <div
-        id="three"
-        onClick={(e) => setNumber(e)}
-      >
-        3
-      </div>
-      <div
-        id="four"
-        onClick={(e) => setNumber(e)}
-      >
-        4
-      </div>
-      <div
-        id="five"
-        onClick={(e) => setNumber(e)}
-      >
-        5
-      </div>
-      <div
-        id="six"
-        onClick={(e) => setNumber(e)}
-      >
-        6
-      </div>
-      <div
-        id="seven"
-        onClick={(e) => setNumber(e)}
-      >
-        7
-      </div>
-      <div
-        id="eight"
-        onClick={(e) => setNumber(e)}
-      >
-        8
-      </div>
-      <div
-        id="nine"
-        onClick={(e) => setNumber(e)}
-      >
-        9
+      <div className="input">
+        <div
+          id="equals"
+          onClick={() => equal()}
+        >
+          =
+        </div>
+        <div
+          id="add"
+          onClick={(e) => setOperator(e)}
+        >
+          +
+        </div>
+        <div
+          id="subtract"
+          onClick={(e) => setOperator(e)}
+        >
+          -
+        </div>
+        <div
+          id="multiply"
+          onClick={(e) => setOperator(e)}
+        >
+          *
+        </div>
+        <div
+          id="divide"
+          onClick={(e) => setOperator(e)}
+        >
+          /
+        </div>
+        <div
+          id="decimal"
+          onClick={() => setDecimal()}
+        >
+          .
+        </div>
+        <div
+          id="clear"
+          onClick={() => clear()}
+        >
+          del
+        </div>
+        <div
+          id="zero"
+          onClick={(e) => setNumber(e)}
+        >
+          0
+        </div>
+        <div
+          id="one"
+          onClick={(e) => setNumber(e)}
+        >
+          1
+        </div>
+        <div
+          id="two"
+          onClick={(e) => setNumber(e)}
+        >
+          2
+        </div>
+        <div
+          id="three"
+          onClick={(e) => setNumber(e)}
+        >
+          3
+        </div>
+        <div
+          id="four"
+          onClick={(e) => setNumber(e)}
+        >
+          4
+        </div>
+        <div
+          id="five"
+          onClick={(e) => setNumber(e)}
+        >
+          5
+        </div>
+        <div
+          id="six"
+          onClick={(e) => setNumber(e)}
+        >
+          6
+        </div>
+        <div
+          id="seven"
+          onClick={(e) => setNumber(e)}
+        >
+          7
+        </div>
+        <div
+          id="eight"
+          onClick={(e) => setNumber(e)}
+        >
+          8
+        </div>
+        <div
+          id="nine"
+          onClick={(e) => setNumber(e)}
+        >
+          9
+        </div>
       </div>
     </>
   );
